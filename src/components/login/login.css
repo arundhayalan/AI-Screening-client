@@ -1,0 +1,19 @@
+.login-form {
+    height: 100vh;
+  }
+  
+  .login-grid {
+    height: 100%;
+  }
+  
+  .login-column {
+    max-width: 450px;
+  }
+  
+  .login-form h2 {
+    margin-top: 2em;
+  }
+  
+  .login-form .ui.segment {
+    margin-top: 2em;
+  }

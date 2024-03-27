@@ -1,0 +1,19 @@
+.video-button{
+    width: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    color: rgb(127, 124, 124);
+  }
+  .video-button:hover{
+    color: white;
+    transition: all 0.20s ease-in-out;
+  }
+
+  .video-button.isOn{
+    color: white;
+    transition: all 0.2s ease-out;
+  }
+  
