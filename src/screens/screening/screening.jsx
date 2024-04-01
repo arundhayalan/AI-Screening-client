@@ -47,7 +47,7 @@ const handleClick = (name)=>{
       <video ref={videoRef} autoPlay muted />
       <div className="controls-container">
          
-       <Button checktoggle = {toggleCamera} isCameraOn={isCameraOn} icon={<IoVideocam />}/> 
+       <Button check = {toggleCamera} On={isCameraOn} icon={<IoVideocam />}/> 
         </div>
       </div>
       

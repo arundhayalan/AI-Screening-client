@@ -3,9 +3,9 @@ import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import './login.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+
+const Login = ({onLogin}) => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -14,34 +14,51 @@ const Login = () => {
       const[popUp, setPopUp] = useState(false);
       const [loginSuccess, setLoginSuccess] = useState(false);
       const [errorMessage, setErrorMessage] = useState('');
-      const navigate = useNavigate();
+     
       
     
       useEffect(() => {
     
         if (loginSuccess) {
           setPopUp(true);
+       
           const timer = setTimeout(() => {
             setPopUp(false)
-            navigate("/screening");
+            
           }, 1000)
           return () => clearTimeout(timer);
         }
     
     
-      }, [loginSuccess, navigate])
+      }, [loginSuccess])
     
       const handleChange = (e, { name, value }) => {
         setFormData({ ...formData, [name]: value });
     
     
       };
+
+      const extractToken = (authorizationHeader) => {
+        if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+            const token = authorizationHeader.split(' ')[1];
+            return token;
+        } else {
+            return null;
+        }
+    };
+    
+    
     
       const handleSubmit = () => {
     
          axios.post('http://localhost:5002/auth/login', formData).then(response=>{
          console.log("login Successful", response.data.message);
-         console.log("token",response.data.token); 
+        
+         const tokenKey = response.data.token;
+
+         const token = extractToken(tokenKey);
+         localStorage.setItem('tokenEntry', token);
+         onLogin(token);
     
          setFormData({
           email:'',
