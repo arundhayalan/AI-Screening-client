@@ -27,8 +27,23 @@ const Room = () => {
       }
     };
 
-    getUserMediaAndSetStream(); // Call the async function immediately
-  }, []);
+    getUserMediaAndSetStream();
+
+    const handleBeforeUnload = (event) => {
+      if (recording) {
+        const confirmationMessage = 'You have unsaved recording. Are you sure you want to leave?';
+        event.returnValue = confirmationMessage;
+        return confirmationMessage;
+      }
+    };
+    
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [recording]);
 
 
   const startRecording = () => {
@@ -73,11 +88,11 @@ const Room = () => {
   };
 
   const uploadRecording = async () => {
-    const blob = new Blob(recordedChunks, { type: 'video/webm' }); // Create Blob from recorded chunks
+    const blob = new Blob(recordedChunks, { type: 'video/webm' }); 
     console.log(blob);
     const formData = new FormData();
     const videoname = generateVideoname();
-    formData.append('recording', blob, videoname); // Append Blob with filename to FormData
+    formData.append('recording', blob, videoname); 
 
     try {
       const response = await axios.post('http://localhost:5002/video/upload', formData, {
@@ -92,7 +107,7 @@ const Room = () => {
   };
 
   const generateVideoname = () => {
-    // Example: Generate a name based on current timestamp
+    
     const timestamp = new Date().getTime();
     return `video_${timestamp}.webm`;
   };
